@@ -26,7 +26,10 @@ def mostrar_fuente(S):
     print("Information:")
     print("\n".join([ "%s : %.5f" % (d,k/N) for d,k in simbolos ]))
 
-    df = pd.DataFrame.from_dict(S, orient='index')
+    df = pd.DataFrame(columns = ["tipo_destino", "protocolo", "cantidad"])
+    for (k1,k2),v in simbolos:
+        df1 = pd.DataFrame({"tipo_destino" : [k1], "protocolo" : [k2], "cantidad" : [v]})
+        df = pd.concat([df1,df], axis = 0, ignore_index = True)
     df.to_csv('data.csv', header=False)
     print(S.keys())
     
