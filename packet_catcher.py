@@ -17,7 +17,11 @@ def mostrar_fuente(S):
         info = -math.log(probabilidad, 2)
         entropy += probability * info
 
-    print("\n".join([ "%s : %.5f" % (d,k/N) for d,k in simbolos ]))
+    print("Símbolos de la fuente y sus probabilidades:")
+    print("\n".join(["%s : %.5f" % (d, k / N) for d, k in simbolos]))
+    print("\nInformación de cada símbolo:")
+    print("\n".join(["%s : %.5f bits" % (s, info) for s, info in information.items()]))
+    print("\nEntropía de la fuente: %.5f bits" % entropy)
     print()
 
 def callback(pkt):
