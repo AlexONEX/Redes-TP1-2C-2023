@@ -1,4 +1,5 @@
 #ignore .pcap files
 *.pcap
 *.csv
+*.txt
 ```
