@@ -50,7 +50,7 @@ def callback(pkt):
         if totalPackets % 1000 == 0:
             print("Captured packets: ", totalPackets)
 
-        if totalPackets >= 250000:
+        if totalPackets >= 25000:
             filename = baseFilename + str(totalPackets) + ".pcap"
             wrpcap(filename, pendingPackets)
             pendingPackets = [] 
