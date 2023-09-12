@@ -5,7 +5,6 @@ import math
 import pandas as pd
 
 S1 = {}
-pendingPackets = []
 baseFilename = "capture--"
 totalPackets = 0
 
@@ -30,19 +29,25 @@ def mostrar_fuente(S):
     for (k1,k2),v in simbolos:
         df1 = pd.DataFrame({"tipo_destino" : [k1], "protocolo" : [k2], "cantidad" : [v]})
         df = pd.concat([df1,df], axis = 0, ignore_index = True)
-    df.to_csv('data.csv', header=False)
-    print(S.keys())
-    
+    df.to_csv('ale_data.csv', header=False)
     print()
 
+    #write entropy and probabilities to file 
+    with open('ale_data2.csv', 'a') as f:
+        f.write("Entropy: %.5f" % entropy)
+        f.write("\n")
+        f.write("Information:")
+        f.write("\n")
+        f.write("\n".join([ "%s : %.5f" % (d,k/N) for d,k in simbolos ]))
+        f.write("\n")
+
 def callback(pkt):
-    global pendingPackets, totalPackets, S1
+    global totalPackets, S1
     if pkt.haslayer(Ether):
         dire = "BROADCAST" if pkt[Ether].dst == "ff:ff:ff:ff:ff:ff" else "UNICAST"
         proto = pkt[Ether].type  # The 'type' field of the frame contains the protocol
         s_i = (dire, proto)  # Define the symbol for the source
 
-        pendingPackets.append(pkt)
         totalPackets += 1
 
         # Update the symbol count in the dictionary
@@ -55,8 +60,6 @@ def callback(pkt):
 
         if totalPackets >= 25000:
             filename = baseFilename + str(totalPackets) + ".pcap"
-            wrpcap(filename, pendingPackets)
-            pendingPackets = [] 
             mostrar_fuente(S1)
             sys.exit(0)
 
