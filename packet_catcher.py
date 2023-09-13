@@ -29,8 +29,8 @@ def mostrar_fuente(S):
     for (k1,k2),v in simbolos:
         d = (k1,k2)
         df1 = pd.DataFrame({"tipo_destino" : [k1], "protocolo" : [k2], "cantidad" : [v], "probabilidad" : [v/N], "informacion" : [information[d]]})
-        df = pd.concat([df1,df], axis = 0, ignore_index = True)
-    df.to_csv('martin_casa01_data.csv', header=False)
+        df = pd.concat([df,df1], axis = 0, ignore_index = True)
+    df.to_csv('martin_casa01_data.csv')
     print(df)
 
     #write entropy and probabilities to file 
