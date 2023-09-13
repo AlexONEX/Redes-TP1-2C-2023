@@ -30,11 +30,11 @@ def mostrar_fuente(S):
         d = (k1,k2)
         df1 = pd.DataFrame({"tipo_destino" : [k1], "protocolo" : [k2], "cantidad" : [v], "probabilidad" : [v/N], "informacion" : [information[d]]})
         df = pd.concat([df,df1], axis = 0, ignore_index = True)
-    df.to_csv('martin_casa01_data.csv')
+    df.to_csv('all_data.csv')
     print(df)
 
     #write entropy and probabilities to file 
-    with open('martin_casa01_data2.csv', 'a') as f:
+    with open('entropy+information.csv', 'a') as f:
         f.write("Entropy: %.5f" % entropy)
         f.write("\n")
         f.write("Information:")
@@ -55,12 +55,11 @@ def callback(pkt):
         if s_i not in S1:
             S1[s_i] = 0.0
         S1[s_i] += 1.0
+        totalPackets=totalPackets+1
+        if totalPackets % 100 == 0: 
+            print("sniffed %d packets" % totalPackets)
         
-        if totalPackets % 1000 == 0:
-            print("Captured packets: ", totalPackets)
-
         if totalPackets >= 25000:
-            filename = baseFilename + str(totalPackets) + ".pcap"
             mostrar_fuente(S1)
             sys.exit(0)
 
