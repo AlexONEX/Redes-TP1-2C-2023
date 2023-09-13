@@ -33,7 +33,7 @@ def mostrar_fuente(S):
     print()
 
     #write entropy and probabilities to file 
-    with open('ale_data2.csv', 'a') as f:
+    with open('martin_casa01_data2.csv', 'a') as f:
         f.write("Entropy: %.5f" % entropy)
         f.write("\n")
         f.write("Information:")
