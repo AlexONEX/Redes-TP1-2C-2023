@@ -18,19 +18,20 @@ def mostrar_fuente(S):
 
     for d,k in simbolos:
         p = k/N
-        information[d] = -math.log2(p)
+        information[d] = (-1) * math.log2(p)
         entropy += p * information[d]
 
     print("Entropy: %.5f" % entropy)
     print("Information:")
     print("\n".join([ "%s : %.5f" % (d,k/N) for d,k in simbolos ]))
 
-    df = pd.DataFrame(columns = ["tipo_destino", "protocolo", "cantidad"])
+    df = pd.DataFrame(columns = ["tipo_destino", "protocolo", "cantidad", "probabilidad", "informacion"])
     for (k1,k2),v in simbolos:
-        df1 = pd.DataFrame({"tipo_destino" : [k1], "protocolo" : [k2], "cantidad" : [v]})
+        d = (k1,k2)
+        df1 = pd.DataFrame({"tipo_destino" : [k1], "protocolo" : [k2], "cantidad" : [v], "probabilidad" : [v/N], "informacion" : [information[d]]})
         df = pd.concat([df1,df], axis = 0, ignore_index = True)
-    df.to_csv('ale_data.csv', header=False)
-    print()
+    df.to_csv('martin_casa01_data.csv', header=False)
+    print(df)
 
     #write entropy and probabilities to file 
     with open('martin_casa01_data2.csv', 'a') as f:
