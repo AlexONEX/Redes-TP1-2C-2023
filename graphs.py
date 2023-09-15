@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def graphs_for_protocols(filepath, output_dir):
+    print(filepath)
+    print(output_dir)
     df = pd.read_csv(filepath, header=None, names=['Index', 'Tipo_Destino', 'Protocolo', 'Cantidad', 'Probabilidad', 'Informacion'], skiprows=1)
 
     protocol_map = {
@@ -14,12 +16,14 @@ def graphs_for_protocols(filepath, output_dir):
 
     df['Protocolo'] = df['Protocolo'].replace(protocol_map)
 
+    #Graficar Broadcast y Unicast vs Total de paquetes 
     df.plot(x='Protocolo', y='Cantidad', kind='bar', legend=False)
     plt.ylabel('Cantidad')
     plt.title('Cantidad por Protocolo')
     plt.grid(axis='y')
-    plt.savefig(os.path.join(output_dir, 'bar_chart.png'))
+    plt.savefig(os.path.join(output_dir, 'Unicast-Brodcast.png'))
     plt.close()
+
 
     df.plot(y='Probabilidad', labels=df['Protocolo'], kind='pie', autopct='%1.1f%%', legend=False)
     plt.ylabel('')
@@ -32,6 +36,7 @@ def graphs_for_protocols(filepath, output_dir):
     plt.ylabel('Información')
     plt.title('Relación entre Probabilidad e Información')
     plt.grid(True)
+    #Instead of scatter_plot, the name of the file should be scatter_plot.png
     plt.savefig(os.path.join(output_dir, 'scatter_plot.png'))
     plt.close()
 
@@ -53,7 +58,30 @@ def graphs_for_information(filepath, output_dir, entropy):
     plt.savefig(os.path.join(output_dir, 'information_bar_chart.png'))
     plt.close()
 
+def graphs_for_destination(filepath, output_dir):
+    # Cargar datos
+    df = pd.read_csv(filepath, header=None, names=['Index', 'Tipo_Destino', 'Protocolo', 'Cantidad', 'Probabilidad', 'Informacion'], skiprows=1)
 
+    # Calcular el total de paquetes
+    total_paquetes = df['Cantidad'].sum()
+
+    # Calcular los porcentajes de broadcast y unicast
+    porcentaje_unicast = df[df['Tipo_Destino'] == 'UNICAST']['Cantidad'].sum() / total_paquetes * 100
+    porcentaje_broadcast = df[df['Tipo_Destino'] == 'BROADCAST']['Cantidad'].sum() / total_paquetes * 100
+
+    # Crear un DataFrame con los porcentajes
+    data = {'Tipo_Destino': ['UNICAST', 'BROADCAST'], 'Porcentaje': [porcentaje_unicast, porcentaje_broadcast]}
+    df_porcentajes = pd.DataFrame(data)
+
+    # Crear un gráfico de barras para visualizar los porcentajes
+    df_porcentajes.plot(x='Tipo_Destino', y='Porcentaje', kind='bar', legend=False)
+    plt.ylabel('Porcentaje')
+    plt.title('Porcentaje de paquetes Unicast y Broadcast')
+    plt.grid(axis='y')
+
+    # Guardar el gráfico como una imagen
+    plt.savefig(os.path.join(output_dir, 'uni-brod-percentage.png'))
+    plt.close()
 
 subdirs = [os.path.join('sources', d) for d in os.listdir('sources') if os.path.isdir(os.path.join('sources', d))]
 
@@ -66,6 +94,7 @@ for subdir in subdirs:
 
         if 'all_data' in csv_file:
             graphs_for_protocols(filepath, output_dir)
+            graphs_for_destination(filepath, output_dir)
         elif 'entropy+information' in csv_file:
             with open(filepath, 'r') as file:
                 lines = file.readlines()
