@@ -5,7 +5,7 @@ import math
 import pandas as pd
 
 S1 = {}
-baseFilename = "capture--"
+S2 = {}
 totalPackets = 0
 
 def mostrar_fuente(S):
@@ -43,24 +43,30 @@ def mostrar_fuente(S):
         f.write("\n")
 
 def callback(pkt):
-    global totalPackets, S1
+    global totalPackets, S1, S2
     if pkt.haslayer(Ether):
         dire = "BROADCAST" if pkt[Ether].dst == "ff:ff:ff:ff:ff:ff" else "UNICAST"
         proto = pkt[Ether].type  # The 'type' field of the frame contains the protocol
         s_i = (dire, proto)  # Define the symbol for the source
 
-        totalPackets += 1
-
-        # Update the symbol count in the dictionary
+        # Update the symbol count in the dictionary for S1
         if s_i not in S1:
             S1[s_i] = 0.0
         S1[s_i] += 1.0
-        totalPackets=totalPackets+1
-        if totalPackets % 100 == 0: 
-            print("sniffed %d packets" % totalPackets)
+
+    if pkt.haslayer(ARP):
+        ip_src = pkt[ARP].psrc
+        if ip_src not in S2:
+            S2[ip_src] = 0.0
+        S2[ip_src] += 1.0
+
+    totalPackets += 1
+    if totalPackets % 100 == 0: 
+        print(f"sniffed {totalPackets} packets")
         
-        if totalPackets >= 25000:
-            mostrar_fuente(S1)
-            sys.exit(0)
+    if totalPackets >= 12500:
+        mostrar_fuente(S1, 'all_data.csv')
+        mostrar_fuente(S2, 'S2_data.csv')
+        sys.exit(0)
 
 sniff(prn=callback)
