@@ -2,5 +2,5 @@
 
 # !!!
 
-Para agregar datos locales generen un subdirectorio source, respetando
+Para agregar datos locales generen un subdirectorio en sources, respetando
 la convencion, muevan los archivos generados al subdirectorio en sources
