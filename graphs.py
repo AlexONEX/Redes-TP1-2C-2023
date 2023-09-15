@@ -21,7 +21,7 @@ def graphs_for_protocols(filepath, output_dir):
     plt.ylabel('Cantidad')
     plt.title('Cantidad por Protocolo')
     plt.grid(axis='y')
-    plt.savefig(os.path.join(output_dir, 'Unicast-Brodcast.png'))
+    plt.savefig(os.path.join(output_dir, 'Protocols-Porcentage.png'))
     plt.close()
 
 
