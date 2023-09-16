@@ -55,10 +55,10 @@ def callback(pkt):
         S1[s_i] += 1.0
 
     if pkt.haslayer(ARP):
-        ip_src = pkt[ARP].psrc
-        if ip_src not in S2:
-            S2[ip_src] = 0.0
-        S2[ip_src] += 1.0
+        ip_dst = pkt[ARP].pdst
+        if ipd_dst not in S2:
+            S2[ip_dst] = 0.0
+        S2[ip_dst] += 1.0
 
     totalPackets += 1
     if totalPackets % 100 == 0: 
