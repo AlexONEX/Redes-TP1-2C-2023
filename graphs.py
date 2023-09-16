@@ -29,13 +29,13 @@ def graphs_for_protocols(filepath, output_dir):
     plt.title('Cantidad por Protocolo')
     plt.grid(axis='y')
     plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'Protocols-Porcentage.png'))
+    plt.savefig(os.path.join(output_dir, 'Protocols-Porcentage.pdf'))
     plt.close()
 
     df_protocolos.plot(y='Probabilidad', labels=df_protocolos['Protocolo'], kind='pie', autopct='%1.1f%%', legend=False) ## y es Probabilidad, pero como IP con broadcast e IP con unicast tienen probabilidad distinta, los separa
     plt.ylabel('')
     plt.title('Proporción por Protocolo')
-    plt.savefig(os.path.join(output_dir, 'pie_chart.png'))
+    plt.savefig(os.path.join(output_dir, 'pie_chart.pdf'))
     plt.close()
 
     df.plot(x='Probabilidad', y='Informacion', kind='scatter', legend=False)
@@ -44,7 +44,7 @@ def graphs_for_protocols(filepath, output_dir):
     plt.title('Relación entre Probabilidad e Información')
     plt.grid(True)
     
-    plt.savefig(os.path.join(output_dir, 'scatter_plot.png'))
+    plt.savefig(os.path.join(output_dir, 'scatter_plot.pdf'))
     plt.close()
 
 def graphs_for_information(filepath, output_dir, entropy):
@@ -65,7 +65,7 @@ def graphs_for_information(filepath, output_dir, entropy):
     plt.grid(axis='y')
     plt.legend()
     plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'information_bar_chart.png'))
+    plt.savefig(os.path.join(output_dir, 'information_bar_chart.pdf'))
     plt.close()
 
 def graphs_for_destination(filepath, output_dir):
@@ -90,7 +90,7 @@ def graphs_for_destination(filepath, output_dir):
     plt.grid(axis='y')
     plt.tight_layout()
     # Guardar el gráfico como una imagen
-    plt.savefig(os.path.join(output_dir, 'uni-brod-percentage.png'))
+    plt.savefig(os.path.join(output_dir, 'uni-brod-percentage.pdf'))
     plt.close()
 
 
@@ -99,7 +99,7 @@ def graphs_for_uni_broad_protocole(filepath, output_dir):
     fig = sns.barplot(data = df, x = "protocolo", y = "cantidad", hue = "tipo_destino")
     plt.grid(axis="y")
     f = fig.get_figure()
-    f.savefig(os.path.join(output_dir, 'uni-brod-protocole.png'))
+    f.savefig(os.path.join(output_dir, 'uni-brod-protocole.pdf'))
     plt.close()
 
 subdirs = [os.path.join('sources', d) for d in os.listdir('sources') if os.path.isdir(os.path.join('sources', d))]
