@@ -96,6 +96,14 @@ def graphs_for_destination(filepath, output_dir):
 
 def graphs_for_uni_broad_protocole(filepath, output_dir):
     df = pd.read_csv(filepath)
+    protocol_map = {
+        2048: 'IP',
+        2054: 'ARP',
+        34525: 'IPv6', # Asegúrate de verificar este valor, es un ejemplo
+        34958: "PNAC",  #802.1X protocol—An IEEE standard for port-based network access control (PNAC) on wired and wireless access points. 
+        # 35130 que es???
+    }
+    df['protocolo'] = df['protocolo'].replace(protocol_map)
     fig = sns.barplot(data = df, x = "protocolo", y = "cantidad", hue = "tipo_destino")
     plt.grid(axis="y")
     f = fig.get_figure()
