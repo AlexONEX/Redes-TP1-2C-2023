@@ -137,6 +137,8 @@ def callback(pkt):
 
 try:
     sniff(prn=callback)
+    mostrar_fuente2(S2)
+    mostrar_fuente3(S3)
 except KeyboardInterrupt:
     mostrar_fuente2(S2)
     mostrar_fuente3(S3)
