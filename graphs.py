@@ -99,18 +99,15 @@ def graphs_for_uni_broad_protocole(filepath, output_dir):
 
 def graficar_opcional(filepath, output_dir):
     df = pd.read_csv(filepath)
-    fig = sns.barplot(data = df, x = 'IP', y = 'cantidad')
-    plt.grid(axis = 'y')
-    f = fig.get_figure()
+    df.plot(y='cantidad', labels=df['IP'], kind='pie', autopct='%1.1f%%', legend=False)
     if '2' in filepath:
         modo = 'destinantion'
         plt.title('Cantidad de paquetes de salida por dirección IP')
     else:
         modo = 'source'
         plt.title('Cantidad de paquetes de entrada por dirección IP')
-    plt.xticks(rotation = 90)
     plt.tight_layout()
-    f.savefig(os.path.join(output_dir, 'barplot_' + modo + '.pdf'))
+    plt.savefig(os.path.join(output_dir, 'pieplot_' + modo + '.pdf'))
     plt.close()
 
 subdirs = [os.path.join('sources', d) for d in os.listdir('sources') if os.path.isdir(os.path.join('sources', d))]
